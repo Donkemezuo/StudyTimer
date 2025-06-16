@@ -39,7 +39,7 @@ struct ContentView: View {
         }
         .onAppear {
             Task {
-                try await viewModel.fetchPreviousStudySession()
+                try viewModel.fetchPreviousStudySession()
             }
         }
     }
@@ -53,8 +53,8 @@ extension ContentView {
         init(dataManager: SwiftDataManaging) {
             self.dataManager = dataManager
         }
-        func fetchPreviousStudySession() async throws {
-            self.previousStudySession = try await dataManager.fetchLatestStudySession()
+        @MainActor func fetchPreviousStudySession() throws {
+            self.previousStudySession = try dataManager.fetchLatestStudySession()
         }
     }
 }

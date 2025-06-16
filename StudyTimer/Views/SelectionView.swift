@@ -108,7 +108,7 @@ extension SelectionView {
 }
 
 #Preview {
-    @State var selectedOption: String? = nil
+    @Previewable @State var selectedOption: String? = nil
     return SelectionView(
         viewModel: .init(title: "Select Option", options: ["option1", "option2", "option3", "option4"]),
         selectedOption: $selectedOption

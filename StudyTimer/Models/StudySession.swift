@@ -6,15 +6,16 @@
 //
 
 import Foundation
+// Step 1
 import SwiftData
 
-@Model // Step 1
+@Model // Step 2
 final class StudySession: Identifiable {
-    let id: String  = UUID().uuidString
-    let creationDate = Date()
-    let duration: Int
-    let subject: String
-    let topic: String
+    internal var id: String  = UUID().uuidString
+    var creationDate = Date()
+    var duration: Int
+    var subject: String
+    var topic: String
     init(
         duration: Int,
         subject: String,

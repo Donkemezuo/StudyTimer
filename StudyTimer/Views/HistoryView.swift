@@ -53,9 +53,9 @@ extension HistoryView {
         init(dataManager: SwiftDataManaging) {
             self.dataManager = dataManager
         }
-        
+        @MainActor
         func fetchHistory() async throws {
-            self.studySessions = try await dataManager.fetchAllStudySession()
+            self.studySessions = try dataManager.fetchAllStudySession()
         }
     }
 }
