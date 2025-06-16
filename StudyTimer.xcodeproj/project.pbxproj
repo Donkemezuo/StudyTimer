@@ -15,7 +15,6 @@
 		55A5CB652DFD1EED00FA22CA /* StudyTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB642DFD1EED00FA22CA /* StudyTimerUITests.swift */; };
 		55A5CB672DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB662DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift */; };
 		55A5CB7D2DFD32F700FA22CA /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB7C2DFD32F700FA22CA /* HistoryView.swift */; };
-		55A5CB7F2DFD334300FA22CA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */; };
 		55A5CB812DFD340500FA22CA /* StudySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB802DFD340500FA22CA /* StudySession.swift */; };
 		55A5CB832DFE522D00FA22CA /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB822DFE522D00FA22CA /* SelectionView.swift */; };
 		55A5CB852DFE57B600FA22CA /* CreateSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB842DFE57B600FA22CA /* CreateSessionView.swift */; };
@@ -53,7 +52,6 @@
 		55A5CB642DFD1EED00FA22CA /* StudyTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimerUITests.swift; sourceTree = "<group>"; };
 		55A5CB662DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		55A5CB7C2DFD32F700FA22CA /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		55A5CB802DFD340500FA22CA /* StudySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySession.swift; sourceTree = "<group>"; };
 		55A5CB822DFE522D00FA22CA /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		55A5CB842DFE57B600FA22CA /* CreateSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSessionView.swift; sourceTree = "<group>"; };
@@ -112,7 +110,6 @@
 			children = (
 				55B052C62DFF9DF90074771B /* Resources */,
 				55A5CB792DFD2D7500FA22CA /* Views */,
-				55A5CB772DFD2D5400FA22CA /* ViewModels */,
 				55A5CB762DFD2D4D00FA22CA /* Models */,
 				55A5CB472DFD1EE900FA22CA /* StudyTimerApp.swift */,
 				55A5CB4D2DFD1EEC00FA22CA /* Assets.xcassets */,
@@ -152,14 +149,6 @@
 				55A5CB802DFD340500FA22CA /* StudySession.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		55A5CB772DFD2D5400FA22CA /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		55A5CB792DFD2D7500FA22CA /* Views */ = {
@@ -319,7 +308,6 @@
 				55A5CB812DFD340500FA22CA /* StudySession.swift in Sources */,
 				55B052CA2DFFCBA10074771B /* TimerCountdownView.swift in Sources */,
 				55A5CB4A2DFD1EE900FA22CA /* ContentView.swift in Sources */,
-				55A5CB7F2DFD334300FA22CA /* HomeViewModel.swift in Sources */,
 				55A5CB852DFE57B600FA22CA /* CreateSessionView.swift in Sources */,
 				55A5CB832DFE522D00FA22CA /* SelectionView.swift in Sources */,
 				55A5CB482DFD1EE900FA22CA /* StudyTimerApp.swift in Sources */,
