@@ -9,7 +9,6 @@
  Step 1 - import AppIntents
  */
 import AppIntents
-import SwiftData
 
 /*
  Step 2 - Conform to AppIntent

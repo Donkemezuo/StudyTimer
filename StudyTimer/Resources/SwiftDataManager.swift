@@ -11,12 +11,13 @@ import Combine
 
 @MainActor
 protocol SwiftDataManaging {
+    var didSaveNewSessionSubject: PassthroughSubject<Void, Never> { get }
+    var isInMemoryDatabase: Bool { get }
     func fetchLatestStudySession() throws -> StudySession?
     func fetchAllStudySession() throws -> [StudySession]
     func saveSession(_ newStudySession: StudySession) throws
     func deleteSession(_ session: StudySession) throws
     func deleteAllStudySessions() throws
-    var didSaveNewSessionSubject: PassthroughSubject<Void, Never> { get }
 }
 
 @MainActor
@@ -25,28 +26,35 @@ final class SwiftDataManager: SwiftDataManaging {
     static let shared = SwiftDataManager()
     // Shared database app group
     private let appGroupIdentifier: String = "group.com.blueoceantechnologies.StudyTimer"
+    internal var isInMemoryDatabase: Bool
+    var sharedModelContainer: ModelContainer
     
-    // Create share model container
-    lazy var sharedModelContainer: ModelContainer = {
+    init(isInMemoryDatabase: Bool = false) {
+        self.isInMemoryDatabase = isInMemoryDatabase
         let schema = Schema([
             StudySession.self,
         ])
-        // App group url
-        guard let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
-            fatalError("Unable to access app group container")
+        var modelConfiguration: ModelConfiguration
+        if isInMemoryDatabase {
+            modelConfiguration = ModelConfiguration(isStoredInMemoryOnly: isInMemoryDatabase)
+        } else {
+            // App group url
+            guard let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+                fatalError("Unable to access app group container")
+            }
+            
+            let databaseURL = appGroupURL.appendingPathComponent("StudyTimer.sqlite")
+            modelConfiguration = ModelConfiguration(
+                schema: schema,
+                url: databaseURL
+            )
         }
-        
-        let databaseURL = appGroupURL.appendingPathComponent("StudyTimer.sqlite")
-        let modelConfiguration = ModelConfiguration(
-            schema: schema,
-            url: databaseURL
-        )
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            self.sharedModelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Failure trying to create ModelContainer: \(error)")
         }
-    }()
+    }
     
     var didSaveNewSessionSubject = PassthroughSubject<Void, Never>()
     
