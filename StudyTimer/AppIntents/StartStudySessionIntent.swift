@@ -14,7 +14,7 @@ import SwiftData
 /*
  Step 2 - Conform to AppIntent
  */
-struct StudySessionIntent: AppIntent {
+struct StartStudySessionIntent: AppIntent {
     /*
      Step 3 - Accept the components
      */

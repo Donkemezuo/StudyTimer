@@ -24,15 +24,17 @@ struct ContentView: View {
                 TabView {
                     CreateSessionView(viewModel: .init(studySession: previousStudySession, dataManager: dataManager))
                         .tabItem {
-                            Image(systemName: "plus")
-                            Text("Home")
+                            Image(systemName: "timer")
+                            Text("Study")
                         }
+                        .tag(0)
                     HistoryView(viewModel: .init(dataManager: dataManager))
                         .tabItem {
-                            Image(systemName: "bookmark.fill")
+                            Image(systemName: "bookmark")
                             Text("History")
-                        }
+                        }.tag(1)
                 }
+                .accentColor(.cardBackground)
             } else {
                 CreateSessionView(viewModel: .init(dataManager: dataManager))
             }

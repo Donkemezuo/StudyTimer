@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import Combine
 
 @MainActor
 protocol SwiftDataManaging {
@@ -15,6 +16,7 @@ protocol SwiftDataManaging {
     func saveSession(_ newStudySession: StudySession) throws
     func deleteSession(_ session: StudySession) throws
     func deleteAllStudySessions() throws
+    var didSaveNewSessionSubject: PassthroughSubject<Void, Never> { get }
 }
 
 @MainActor
@@ -45,15 +47,16 @@ final class SwiftDataManager: SwiftDataManaging {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
-    var previousStudySession: StudySession?
-    var context: ModelContext {
+    
+    var didSaveNewSessionSubject = PassthroughSubject<Void, Never>()
+    
+    internal var context: ModelContext {
         sharedModelContainer.mainContext
     }
     
     func fetchLatestStudySession() throws -> StudySession? {
         let descriptor = FetchDescriptor<StudySession>(sortBy: [SortDescriptor(\.creationDate)])
-        self.previousStudySession = try context.fetch(descriptor).first
+        let previousStudySession = try context.fetch(descriptor).last
         return previousStudySession
     }
 
@@ -65,6 +68,7 @@ final class SwiftDataManager: SwiftDataManaging {
     func saveSession(_ newStudySession: StudySession) throws {
             context.insert(newStudySession)
         try context.save()
+        didSaveNewSessionSubject.send()
     }
     
     func deleteSession(_ session: StudySession) throws {

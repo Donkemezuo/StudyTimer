@@ -8,6 +8,7 @@ import SwiftUI
 import Combine
 
 extension CreateSessionView {
+    @MainActor
     final class ViewModel: ObservableObject {
         @Published var selectedSubject: String? = nil
         @Published var selectedTopic: String? = nil
@@ -27,12 +28,21 @@ extension CreateSessionView {
             self.selectedSubject = studySession?.subject
             self.selectedDuration = studySession?.duration
             self.selectedTopic = studySession?.topic
+            self.fetchLatestStudySession()
             if let duration = duration,
                timerViewModel == nil
             {
                 self.timerViewModel = .init(totalTime: duration)
                 self.bindTimerCompletion()
             }
+            dataManager
+                .didSaveNewSessionSubject
+                .receive(on: RunLoop.main)
+                .sink {[weak self] in
+                    guard let self else { return }
+                    self.fetchLatestStudySession()
+                    self.startStudySession()
+                }.store(in: &cancellables)
         }
         
         var durationText: String {
@@ -70,7 +80,7 @@ extension CreateSessionView {
             case .running:
                 return "Stop your \(studySession?.duration ?? 0)-minute study session on \(studySession?.subject ?? "subject")"
             case .new:
-                return "State a new study session"
+                return "Start a study session"
             }
         }
         
@@ -87,13 +97,12 @@ extension CreateSessionView {
         }
         
         @MainActor
-        private func startStudySession(with newStudySession: StudySession) {
+        private func startStudySession() {
             guard let duration else { return }
             timerViewModel = .init(totalTime: duration)
             timerViewModel?.start()
             studySessionState = .running
             bindTimerCompletion()
-            self.studySession = newStudySession
         }
         
         private func stopStudySession() {
@@ -107,7 +116,6 @@ extension CreateSessionView {
                 timerViewModel = .init(totalTime: session.duration * 60)
                 bindTimerCompletion()
             }
-            
             timerViewModel?.start()
             studySessionState = .running
         }
@@ -136,8 +144,7 @@ extension CreateSessionView {
                 subject: selectedSubject,
                 topic: selectedTopic
             )
-            try await dataManager.saveSession(newStudySession)
-           await startStudySession(with: newStudySession)
+           try dataManager.saveSession(newStudySession)
         }
     
         private func bindTimerCompletion() {
@@ -147,6 +154,18 @@ extension CreateSessionView {
                     self?.studySessionState = .new
                 }.store(in: &cancellables)
             
+        }
+        private func fetchLatestStudySession() {
+            if timerViewModel != nil {
+                timerViewModel = nil
+            }
+            Task {
+                do {
+                    studySession = try dataManager.fetchLatestStudySession()
+                } catch {
+                    print("Error fetching latest study session: \(error)")
+                }
+            }
         }
         
         let subjects = [
