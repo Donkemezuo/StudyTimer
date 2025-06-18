@@ -13,7 +13,7 @@ struct RepeatLastSessionIntent: AppIntent, ProvidesDialog {
     static var description = IntentDescription("Start a new study session using the same subject, topic, and duration as the last one.")
     
     @MainActor
-    func perform() async throws -> some IntentResult {
+    func perform() async throws -> some ProvidesDialog {
         guard let lastStudySession = try SwiftDataManager.shared.fetchLatestStudySession() else {
             return .result(dialog: "No previous session found.")
         }
