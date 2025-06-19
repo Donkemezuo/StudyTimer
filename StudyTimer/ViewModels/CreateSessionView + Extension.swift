@@ -96,6 +96,15 @@ extension CreateSessionView {
             return value
         }
         
+        var isStartSessionDisabled: Bool {
+            guard (selectedTopic != nil),
+                  (selectedSubject != nil),
+                  duration != nil else {
+                return true
+            }
+            return false
+        }
+        
         @MainActor
         private func startStudySession() {
             guard let duration else { return }

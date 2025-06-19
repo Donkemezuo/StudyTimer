@@ -16,10 +16,11 @@ struct ContentView: View {
         let viewModel = ViewModel(dataManager: dataManager)
         _viewModel = State(initialValue: viewModel)
         self.dataManager =  dataManager
+        self.setupTabBarAppearance()
     }
 
     var body: some View {
-        NavigationStack {
+        VStack {
             if let previousStudySession = viewModel.previousStudySession {
                 TabView {
                     CreateSessionView(viewModel: .init(studySession: previousStudySession, dataManager: dataManager))
@@ -28,11 +29,13 @@ struct ContentView: View {
                             Text("Study")
                         }
                         .tag(0)
-                    HistoryView(viewModel: .init(dataManager: dataManager))
-                        .tabItem {
-                            Image(systemName: "bookmark")
-                            Text("History")
-                        }.tag(1)
+                    NavigationStack {
+                        HistoryView(viewModel: .init(dataManager: dataManager))
+                    }
+                    .tabItem {
+                        Image(systemName: "bookmark")
+                        Text("History")
+                    }.tag(1)
                 }
                 .accentColor(.cardBackground)
             } else {
@@ -45,6 +48,25 @@ struct ContentView: View {
             }
         }
     }
+    
+    func setupTabBarAppearance() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+
+        // Set your desired background color
+        tabBarAppearance.backgroundColor = .screenBackground
+
+        // Customize selected item appearance color (accent color)
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .cardBackground
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.cardBackground]
+
+        // Apply to standard and scrollEdgeAppearance (for iOS 15+)
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
+    }
+
 }
 
 extension ContentView {

@@ -97,8 +97,10 @@ struct CreateSessionView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(viewModel.studySessionState.buttonBackgroundColor)
+                    .opacity(viewModel.isStartSessionDisabled ? 0.5 : 1)
                     .cornerRadius(16)
             }
+            .disabled(viewModel.isStartSessionDisabled)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 20)
