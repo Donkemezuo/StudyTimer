@@ -9,33 +9,58 @@ import SwiftUI
 import SwiftData
 
 struct HistoryView: View {
-    var viewModel: ViewModel
+    @ObservedObject var viewModel: ViewModel
+    @State var showDeleteStudySessionConfrimationAlert: Bool = false
+    @State var showDeleteErrorAlert: Bool = false
     var body: some View {
         VStack(spacing: 3) {
-            Text("History")
-                .font(.system(size: 50, weight: .semibold))
-                .foregroundColor(.buttonTitleText)
-                .multilineTextAlignment(.leading)
-            ScrollView {
-                VStack(spacing: 12) {
-                    ForEach(viewModel.studySessions, id: \.self) { studySession in
-                        HistoryItemView(
-                            viewModel: .init(
-                                duration: studySession.duration,
-                                date: studySession.creationDate,
-                                subject: studySession.subject,
-                                topic: studySession.topic
-                            )
+            List {
+                ForEach(viewModel.studySessions, id: \.self) { studySession in
+                    HistoryItemView(
+                        viewModel: .init(
+                            duration: studySession.duration,
+                            date: studySession.creationDate,
+                            subject: studySession.subject,
+                            topic: studySession.topic
                         )
+                    )
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            showDeleteStudySessionConfrimationAlert.toggle()
+                        } label: {
+                            Text("Delete")
+                        }
                     }
                 }
-                .padding()
             }
-            Spacer()
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .background(Color.clear)
         }
+        .navigationTitle("History")
+        .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .leading)
-        .padding([.horizontal, .top], 20)
         .background(Color.screenBackground)
+        .alert(isPresented: $showDeleteErrorAlert) {
+            Alert(title: .init("An error occurred"))
+        }
+        .alert(isPresented: $showDeleteStudySessionConfrimationAlert) {
+            Alert(
+                title: Text("Are you sure?"),
+                message: Text( "This action will permanently delete the study session"),
+                primaryButton: .destructive(Text("Delete").bold(),
+                    action: {
+                        Task {
+                            do {
+                                try await viewModel.deleteStudySession(viewModel.studySessions.last!)
+                            } catch {
+                                showDeleteErrorAlert.toggle()
+                            }
+                        }
+                    }),
+                secondaryButton: .cancel(Text("Cancel").bold())
+            )
+        }
         .onAppear {
             Task {
                 try await viewModel.fetchHistory()
@@ -45,9 +70,8 @@ struct HistoryView: View {
 }
 
 extension HistoryView {
-    @Observable
-    final class ViewModel {
-        var studySessions: [StudySession] = []
+    final class ViewModel: ObservableObject {
+        @Published var studySessions: [StudySession] = []
         private let dataManager: SwiftDataManaging
         
         init(dataManager: SwiftDataManaging) {
@@ -57,6 +81,12 @@ extension HistoryView {
         func fetchHistory() async throws {
             self.studySessions = try dataManager.fetchAllStudySession()
         }
+        
+        @MainActor
+        func deleteStudySession(_ studySession: StudySession) async throws {
+           try self.dataManager.deleteSession(studySession)
+            self.studySessions.removeAll { $0.id == studySession.id }
+        }
     }
 }
 
@@ -64,7 +94,7 @@ struct HistoryItemView: View {
     var viewModel: ViewModel
     var body: some View {
         HStack {
-            VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 20) {
                 Text(viewModel.displayableDuration)
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(.infoTitle)
@@ -74,9 +104,8 @@ struct HistoryItemView: View {
                     .foregroundColor(.infoTitle)
                     .multilineTextAlignment(.leading)
             }
-            .frame(alignment: .leading)
             Spacer()
-            VStack(spacing: 20){
+            VStack(alignment: .leading,spacing: 20){
                 Text(viewModel.subject)
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(.infoTitle)
@@ -86,7 +115,6 @@ struct HistoryItemView: View {
                     .foregroundColor(.infoTitle)
                     .multilineTextAlignment(.leading)
             }
-            .frame(alignment: .leading)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -97,7 +125,6 @@ struct HistoryItemView: View {
 }
 
 extension HistoryItemView {
-    @Observable
     final class ViewModel {
         let duration: Int
         let date: Date
