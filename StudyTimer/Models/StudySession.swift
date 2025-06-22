@@ -16,6 +16,10 @@ final class StudySession: Identifiable {
     var duration: Int
     var subject: String
     var topic: String
+    
+    var durationInSeconds: Int {
+        return duration * 60
+    }
     init(
         duration: Int,
         subject: String,

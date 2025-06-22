@@ -16,20 +16,19 @@ extension CreateSessionView {
         @Published var studySession: StudySession? = nil
         @Published var timerViewModel: TimerCountdownView.ViewModel? = nil
         @Published var studySessionState: StudySessionState = .new
-        private let dataManager: SwiftDataManaging
+        private let dataManager: SwiftDataProtocol
         var cancellables: Set<AnyCancellable> = []
         
         init(
             studySession: StudySession? = nil,
-            dataManager: SwiftDataManaging
+            dataManager: SwiftDataProtocol
         ) {
             self.studySession = studySession
             self.dataManager = dataManager
             self.selectedSubject = studySession?.subject
             self.selectedDuration = studySession?.duration
             self.selectedTopic = studySession?.topic
-            self.fetchLatestStudySession()
-            if let duration = duration,
+            if let duration = sessionDuration,
                timerViewModel == nil
             {
                 self.timerViewModel = .init(totalTime: duration)
@@ -40,8 +39,19 @@ extension CreateSessionView {
                 .receive(on: RunLoop.main)
                 .sink {[weak self] in
                     guard let self else { return }
-                    self.fetchLatestStudySession()
                     self.startStudySession()
+                }.store(in: &cancellables)
+            dataManager
+                .didDeleteSessionSubject
+                .receive(on: RunLoop.main)
+                .sink {[weak self] deletedSession in
+                    guard let self = self else { return }
+                    if self.studySession?.id == deletedSession.id {
+                        self.studySession = nil
+                        Task {
+                            try? self.fetchLatestStudySession()
+                        }
+                    }
                 }.store(in: &cancellables)
         }
         
@@ -84,10 +94,10 @@ extension CreateSessionView {
             }
         }
         
-        var duration: Int? {
+        var sessionDuration: Int? {
             var value: Int?
             if let studySession {
-                value  =  studySession.duration * 60
+                value  =  studySession.durationInSeconds
             } else if let selectedDuration {
                 value = selectedDuration * 60
             } else {
@@ -99,7 +109,7 @@ extension CreateSessionView {
         var isStartSessionDisabled: Bool {
             guard (selectedTopic != nil),
                   (selectedSubject != nil),
-                  duration != nil else {
+                  sessionDuration != nil else {
                 return true
             }
             return false
@@ -107,8 +117,8 @@ extension CreateSessionView {
         
         @MainActor
         private func startStudySession() {
-            guard let duration else { return }
-            timerViewModel = .init(totalTime: duration)
+            guard let studySession else { return }
+            timerViewModel = .init(totalTime: studySession.durationInSeconds)
             timerViewModel?.start()
             studySessionState = .running
             bindTimerCompletion()
@@ -122,7 +132,7 @@ extension CreateSessionView {
         private func resumeExistingSession() {
             guard let session = studySession else { return }
             if timerViewModel == nil {
-                timerViewModel = .init(totalTime: session.duration * 60)
+                timerViewModel = .init(totalTime: session.durationInSeconds)
                 bindTimerCompletion()
             }
             timerViewModel?.start()
@@ -153,7 +163,8 @@ extension CreateSessionView {
                 subject: selectedSubject,
                 topic: selectedTopic
             )
-           try dataManager.saveSession(newStudySession)
+           try dataManager.saveStudySession(newStudySession)
+           self.studySession = newStudySession
         }
     
         private func bindTimerCompletion() {
@@ -164,16 +175,15 @@ extension CreateSessionView {
                 }.store(in: &cancellables)
             
         }
-        private func fetchLatestStudySession() {
+        
+        @MainActor
+        func fetchLatestStudySession() throws {
             if timerViewModel != nil {
                 timerViewModel = nil
             }
-            Task {
-                do {
-                    studySession = try dataManager.fetchLatestStudySession()
-                } catch {
-                    print("Error fetching latest study session: \(error)")
-                }
+            let latest = try? dataManager.fetchLatestStudySession()
+            if self.studySession?.id != latest?.id {
+                self.studySession  = latest
             }
         }
         

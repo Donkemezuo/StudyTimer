@@ -10,9 +10,9 @@ import SwiftData
 
 struct ContentView: View {
     @State private var viewModel:  ViewModel
-    let dataManager: SwiftDataManaging
+    let dataManager: SwiftDataProtocol
     
-    init(dataManager: SwiftDataManaging) {
+    init(dataManager: SwiftDataProtocol) {
         let viewModel = ViewModel(dataManager: dataManager)
         _viewModel = State(initialValue: viewModel)
         self.dataManager =  dataManager
@@ -72,9 +72,9 @@ struct ContentView: View {
 extension ContentView {
     @Observable
     final class ViewModel {
-        private let dataManager: SwiftDataManaging
+        private let dataManager: SwiftDataProtocol
         var previousStudySession: StudySession?
-        init(dataManager: SwiftDataManaging) {
+        init(dataManager: SwiftDataProtocol) {
             self.dataManager = dataManager
         }
         @MainActor func fetchPreviousStudySession() throws {

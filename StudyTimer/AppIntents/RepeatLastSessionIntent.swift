@@ -22,7 +22,7 @@ struct RepeatLastSessionIntent: AppIntent, ProvidesDialog {
             subject: lastStudySession.subject,
             topic: lastStudySession.topic
         )
-        try SwiftDataManager.shared.saveSession(newStudySession)
+        try SwiftDataManager.shared.saveStudySession(newStudySession)
         
         return .result(dialog: "Started a new session on \(newStudySession.subject) for \(newStudySession.duration) minutes.")
     }

@@ -38,7 +38,7 @@ struct StartStudySessionIntent: AppIntent {
         )
         let database = await SwiftDataManager.shared
         do {
-            try await database.saveSession(newSession)
+            try await database.saveStudySession(newSession)
         } catch {
             print("RD: Failed to save session: \(error)")
         }

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct OptionRow<T: Equatable>: View {
     let value: T
     let isSelected: Bool
@@ -108,7 +106,7 @@ extension SelectionView {
 }
 
 #Preview {
-    @Previewable @State var selectedOption: String? = nil
+    @State var selectedOption: String? = nil
     return SelectionView(
         viewModel: .init(title: "Select Option", options: ["option1", "option2", "option3", "option4"]),
         selectedOption: $selectedOption

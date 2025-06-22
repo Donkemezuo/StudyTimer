@@ -24,9 +24,11 @@ struct HistoryView: View {
                             topic: studySession.topic
                         )
                     )
-                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    .listRowBackground(Color.clear)
+                    .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            showDeleteStudySessionConfrimationAlert.toggle()
+                            showDeleteStudySessionConfrimationAlert = true
+                            viewModel.studySessionToDelete = studySession
                         } label: {
                             Text("Delete")
                         }
@@ -35,7 +37,6 @@ struct HistoryView: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
-            .background(Color.clear)
         }
         .navigationTitle("History")
         .navigationBarTitleDisplayMode(.inline)
@@ -52,7 +53,7 @@ struct HistoryView: View {
                     action: {
                         Task {
                             do {
-                                try await viewModel.deleteStudySession(viewModel.studySessions.last!)
+                                try await viewModel.deleteStudySession()
                             } catch {
                                 showDeleteErrorAlert.toggle()
                             }
@@ -72,20 +73,26 @@ struct HistoryView: View {
 extension HistoryView {
     final class ViewModel: ObservableObject {
         @Published var studySessions: [StudySession] = []
-        private let dataManager: SwiftDataManaging
+        @Published var studySessionToDelete: StudySession? = nil
+        private let dataManager: SwiftDataProtocol
         
-        init(dataManager: SwiftDataManaging) {
+        init(dataManager: SwiftDataProtocol) {
             self.dataManager = dataManager
         }
+        
         @MainActor
         func fetchHistory() async throws {
             self.studySessions = try dataManager.fetchAllStudySession()
         }
         
         @MainActor
-        func deleteStudySession(_ studySession: StudySession) async throws {
-           try self.dataManager.deleteSession(studySession)
-            self.studySessions.removeAll { $0.id == studySession.id }
+        func deleteStudySession() async throws {
+            guard let studySessionToDelete else {
+                return
+            }
+           try self.dataManager.deleteStudySession(studySessionToDelete)
+            self.studySessions.removeAll { $0.id == studySessionToDelete.id }
+            self.studySessionToDelete = nil
         }
     }
 }

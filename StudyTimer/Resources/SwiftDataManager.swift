@@ -10,18 +10,19 @@ import SwiftData
 import Combine
 
 @MainActor
-protocol SwiftDataManaging {
+protocol SwiftDataProtocol {
     var didSaveNewSessionSubject: PassthroughSubject<Void, Never> { get }
+    var didDeleteSessionSubject: PassthroughSubject<StudySession, Never> { get }
     var isInMemoryDatabase: Bool { get }
     func fetchLatestStudySession() throws -> StudySession?
     func fetchAllStudySession() throws -> [StudySession]
-    func saveSession(_ newStudySession: StudySession) throws
-    func deleteSession(_ session: StudySession) throws
+    func saveStudySession(_ newStudySession: StudySession) throws
+    func deleteStudySession(_ session: StudySession) throws
     func deleteAllStudySessions() throws
 }
 
 @MainActor
-final class SwiftDataManager: SwiftDataManaging {
+final class SwiftDataManager: SwiftDataProtocol {
     
     static let shared = SwiftDataManager()
     // Shared database app group
@@ -57,6 +58,7 @@ final class SwiftDataManager: SwiftDataManaging {
     }
     
     var didSaveNewSessionSubject = PassthroughSubject<Void, Never>()
+    var didDeleteSessionSubject = PassthroughSubject<StudySession, Never>()
     
     internal var context: ModelContext {
         sharedModelContainer.mainContext
@@ -73,14 +75,15 @@ final class SwiftDataManager: SwiftDataManaging {
         return try context.fetch(descriptor)
     }
     
-    func saveSession(_ newStudySession: StudySession) throws {
+    func saveStudySession(_ newStudySession: StudySession) throws {
             context.insert(newStudySession)
         try context.save()
         didSaveNewSessionSubject.send()
     }
     
-    func deleteSession(_ session: StudySession) throws {
+    func deleteStudySession(_ session: StudySession) throws {
         context.delete(session)
+        didDeleteSessionSubject.send(session)
         try context.save()
     }
     
