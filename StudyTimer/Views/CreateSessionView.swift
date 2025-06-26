@@ -106,11 +106,6 @@ struct CreateSessionView: View {
         .padding(.horizontal, 20)
         .background(Color.screenBackground)
         .ignoresSafeArea()
-        .onAppear(perform: {
-            Task {
-                try viewModel.fetchLatestStudySession()
-            }
-        })
         .sheet(isPresented: $showSubjectSelectionView) {
             SelectionView(viewModel: .init(title: "Select Subject", options: viewModel.subjects), selectedOption: $viewModel.selectedSubject)
         }

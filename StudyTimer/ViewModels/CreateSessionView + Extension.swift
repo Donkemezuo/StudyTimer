@@ -34,6 +34,7 @@ extension CreateSessionView {
                 self.timerViewModel = .init(totalTime: duration)
                 self.bindTimerCompletion()
             }
+            self.fetchLatestStudySession()
             dataManager
                 .didSaveNewSessionSubject
                 .receive(on: RunLoop.main)
@@ -47,10 +48,12 @@ extension CreateSessionView {
                 .sink {[weak self] deletedSession in
                     guard let self = self else { return }
                     if self.studySession?.id == deletedSession.id {
+                        self.timerViewModel = nil
                         self.studySession = nil
-                        Task {
-                            try? self.fetchLatestStudySession()
-                        }
+                        self.selectedSubject = nil
+                        self.selectedTopic = nil
+                        self.selectedDuration = nil
+                        self.studySessionState = .new
                     }
                 }.store(in: &cancellables)
         }
@@ -177,7 +180,7 @@ extension CreateSessionView {
         }
         
         @MainActor
-        func fetchLatestStudySession() throws {
+        func fetchLatestStudySession() {
             if timerViewModel != nil {
                 timerViewModel = nil
             }
