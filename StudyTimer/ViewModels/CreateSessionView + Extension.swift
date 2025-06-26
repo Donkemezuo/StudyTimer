@@ -10,9 +10,21 @@ import Combine
 extension CreateSessionView {
     @MainActor
     final class ViewModel: ObservableObject {
-        @Published var selectedSubject: String? = nil
-        @Published var selectedTopic: String? = nil
-        @Published var selectedDuration: Int? = nil
+        @Published var selectedSubject: String? = nil {
+            didSet {
+                resetStudySessionState()
+            }
+        }
+        @Published var selectedTopic: String? = nil {
+            didSet {
+                resetStudySessionState()
+            }
+        }
+        @Published var selectedDuration: Int? = nil {
+            didSet {
+                resetStudySessionState()
+            }
+        }
         @Published var studySession: StudySession? = nil
         @Published var timerViewModel: TimerCountdownView.ViewModel? = nil
         @Published var studySessionState: StudySessionState = .new
@@ -116,6 +128,17 @@ extension CreateSessionView {
                 return true
             }
             return false
+        }
+        
+        var isSessionOngoing: Bool {
+            return studySessionState == .running
+        }
+        
+        func resetStudySessionState() {
+            if studySessionState != .new {
+                studySessionState = .new
+                timerViewModel = nil
+            }
         }
         
         @MainActor

@@ -41,6 +41,7 @@ struct CreateSessionView: View {
             InfoRowView(viewModel: .init(
                 title: "Duration",
                 value: viewModel.durationText,
+                isInteractionDisabled: viewModel.isSessionOngoing,
                 valueBackgroundColor: .clear,
                 titleTintColor: .buttonTitleText,
                 valueTintColor: .buttonTitleText,
@@ -56,6 +57,7 @@ struct CreateSessionView: View {
                 InfoRowView(viewModel: .init(
                     title: "Subject",
                     value: viewModel.subjectText,
+                    isInteractionDisabled: viewModel.isSessionOngoing,
                     valueBackgroundColor: .pillBackground,
                     titleTintColor: .screenBackground,
                     valueTintColor: .pillText,
@@ -69,6 +71,7 @@ struct CreateSessionView: View {
                 InfoRowView(viewModel: .init(
                     title: "Topic",
                     value: viewModel.topicText,
+                    isInteractionDisabled: viewModel.isSessionOngoing,
                     valueBackgroundColor: .pillBackground,
                     titleTintColor: .screenBackground,
                     valueTintColor: .pillText,

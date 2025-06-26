@@ -33,6 +33,7 @@ struct InfoRowView: View {
                         .cornerRadius(20)
                 }
                 .buttonStyle(.plain)
+                .disabled(viewModel.isInteractionDisabled)
             }
         }
         .padding(.horizontal, 20)
@@ -44,6 +45,7 @@ extension InfoRowView {
     final class ViewModel: ObservableObject {
         let title: String
         let value: String
+        let isInteractionDisabled: Bool
         let valueBackgroundColor: Color
         let titleTintColor: Color
         let valueTintColor: Color
@@ -51,6 +53,7 @@ extension InfoRowView {
         init(
             title: String,
             value: String,
+            isInteractionDisabled: Bool = false,
             valueBackgroundColor: Color,
             titleTintColor: Color,
             valueTintColor: Color,
@@ -58,6 +61,7 @@ extension InfoRowView {
         ) {
             self.title = title
             self.value = value
+            self.isInteractionDisabled = isInteractionDisabled
             self.valueBackgroundColor = valueBackgroundColor
             self.titleTintColor = titleTintColor
             self.valueTintColor = valueTintColor
