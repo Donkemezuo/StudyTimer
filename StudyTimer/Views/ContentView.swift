@@ -10,51 +10,75 @@ import SwiftData
 
 struct ContentView: View {
     @State private var viewModel:  ViewModel
-    let dataManager: SwiftDataManaging
+    let dataManager: SwiftDataProtocol
     
-    init(dataManager: SwiftDataManaging) {
+    init(dataManager: SwiftDataProtocol) {
         let viewModel = ViewModel(dataManager: dataManager)
         _viewModel = State(initialValue: viewModel)
         self.dataManager =  dataManager
+        self.setupTabBarAppearance()
     }
 
     var body: some View {
-        NavigationStack {
+        VStack {
             if let previousStudySession = viewModel.previousStudySession {
                 TabView {
                     CreateSessionView(viewModel: .init(studySession: previousStudySession, dataManager: dataManager))
                         .tabItem {
-                            Image(systemName: "plus")
-                            Text("Home")
+                            Image(systemName: "timer")
+                            Text("Study")
                         }
-                    HistoryView(viewModel: .init(dataManager: dataManager))
-                        .tabItem {
-                            Image(systemName: "bookmark.fill")
-                            Text("History")
-                        }
+                        .tag(0)
+                    NavigationStack {
+                        HistoryView(viewModel: .init(dataManager: dataManager))
+                    }
+                    .tabItem {
+                        Image(systemName: "bookmark")
+                        Text("History")
+                    }.tag(1)
                 }
+                .accentColor(.cardBackground)
             } else {
                 CreateSessionView(viewModel: .init(dataManager: dataManager))
             }
         }
         .onAppear {
             Task {
-                try await viewModel.fetchPreviousStudySession()
+                try viewModel.fetchPreviousStudySession()
             }
         }
     }
+    
+    func setupTabBarAppearance() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+
+        // Set your desired background color
+        tabBarAppearance.backgroundColor = .screenBackground
+
+        // Customize selected item appearance color (accent color)
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .cardBackground
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.cardBackground]
+
+        // Apply to standard and scrollEdgeAppearance (for iOS 15+)
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
+    }
+
 }
 
 extension ContentView {
     @Observable
     final class ViewModel {
-        private let dataManager: SwiftDataManaging
+        private let dataManager: SwiftDataProtocol
         var previousStudySession: StudySession?
-        init(dataManager: SwiftDataManaging) {
+        init(dataManager: SwiftDataProtocol) {
             self.dataManager = dataManager
         }
-        func fetchPreviousStudySession() async throws {
-            self.previousStudySession = try await dataManager.fetchLatestStudySession()
+        @MainActor func fetchPreviousStudySession() throws {
+            self.previousStudySession = try dataManager.fetchLatestStudySession()
         }
     }
 }

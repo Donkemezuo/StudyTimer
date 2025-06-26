@@ -15,13 +15,15 @@
 		55A5CB652DFD1EED00FA22CA /* StudyTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB642DFD1EED00FA22CA /* StudyTimerUITests.swift */; };
 		55A5CB672DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB662DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift */; };
 		55A5CB7D2DFD32F700FA22CA /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB7C2DFD32F700FA22CA /* HistoryView.swift */; };
-		55A5CB7F2DFD334300FA22CA /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */; };
 		55A5CB812DFD340500FA22CA /* StudySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB802DFD340500FA22CA /* StudySession.swift */; };
 		55A5CB832DFE522D00FA22CA /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB822DFE522D00FA22CA /* SelectionView.swift */; };
 		55A5CB852DFE57B600FA22CA /* CreateSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB842DFE57B600FA22CA /* CreateSessionView.swift */; };
 		55A5CB872DFE591C00FA22CA /* InfoRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CB862DFE591C00FA22CA /* InfoRowView.swift */; };
 		55B052C82DFF9E190074771B /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B052C72DFF9E190074771B /* SwiftDataManager.swift */; };
 		55B052CA2DFFCBA10074771B /* TimerCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B052C92DFFCBA10074771B /* TimerCountdownView.swift */; };
+		F060A2552E02905A00EF3FCA /* RepeatLastSessionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F060A2542E02905800EF3FCA /* RepeatLastSessionIntent.swift */; };
+		F0C889CF2E0079E60035D5FB /* CreateSessionView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C889CE2E0079DB0035D5FB /* CreateSessionView + Extension.swift */; };
+		F0C889D22E00A91A0035D5FB /* StartStudySessionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C889D12E00A8F70035D5FB /* StartStudySessionIntent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,13 +55,16 @@
 		55A5CB642DFD1EED00FA22CA /* StudyTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimerUITests.swift; sourceTree = "<group>"; };
 		55A5CB662DFD1EED00FA22CA /* StudyTimerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		55A5CB7C2DFD32F700FA22CA /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		55A5CB802DFD340500FA22CA /* StudySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySession.swift; sourceTree = "<group>"; };
 		55A5CB822DFE522D00FA22CA /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		55A5CB842DFE57B600FA22CA /* CreateSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSessionView.swift; sourceTree = "<group>"; };
 		55A5CB862DFE591C00FA22CA /* InfoRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRowView.swift; sourceTree = "<group>"; };
 		55B052C72DFF9E190074771B /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 		55B052C92DFFCBA10074771B /* TimerCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCountdownView.swift; sourceTree = "<group>"; };
+		F060A2532E023A1100EF3FCA /* StudyTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StudyTimer.entitlements; sourceTree = "<group>"; };
+		F060A2542E02905800EF3FCA /* RepeatLastSessionIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatLastSessionIntent.swift; sourceTree = "<group>"; };
+		F0C889CE2E0079DB0035D5FB /* CreateSessionView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateSessionView + Extension.swift"; sourceTree = "<group>"; };
+		F0C889D12E00A8F70035D5FB /* StartStudySessionIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartStudySessionIntent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,9 +115,11 @@
 		55A5CB462DFD1EE900FA22CA /* StudyTimer */ = {
 			isa = PBXGroup;
 			children = (
+				F060A2532E023A1100EF3FCA /* StudyTimer.entitlements */,
+				F0C889D02E00A8EF0035D5FB /* AppIntents */,
+				F0C889CD2E0079C80035D5FB /* ViewModels */,
 				55B052C62DFF9DF90074771B /* Resources */,
 				55A5CB792DFD2D7500FA22CA /* Views */,
-				55A5CB772DFD2D5400FA22CA /* ViewModels */,
 				55A5CB762DFD2D4D00FA22CA /* Models */,
 				55A5CB472DFD1EE900FA22CA /* StudyTimerApp.swift */,
 				55A5CB4D2DFD1EEC00FA22CA /* Assets.xcassets */,
@@ -154,14 +161,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		55A5CB772DFD2D5400FA22CA /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				55A5CB7E2DFD334300FA22CA /* HomeViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		55A5CB792DFD2D7500FA22CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +180,23 @@
 				55B052C72DFF9E190074771B /* SwiftDataManager.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F0C889CD2E0079C80035D5FB /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F0C889CE2E0079DB0035D5FB /* CreateSessionView + Extension.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F0C889D02E00A8EF0035D5FB /* AppIntents */ = {
+			isa = PBXGroup;
+			children = (
+				F0C889D12E00A8F70035D5FB /* StartStudySessionIntent.swift */,
+				F060A2542E02905800EF3FCA /* RepeatLastSessionIntent.swift */,
+			);
+			path = AppIntents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +263,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					55A5CB432DFD1EE900FA22CA = {
 						CreatedOnToolsVersion = 15.3;
@@ -318,11 +334,13 @@
 				55A5CB7D2DFD32F700FA22CA /* HistoryView.swift in Sources */,
 				55A5CB812DFD340500FA22CA /* StudySession.swift in Sources */,
 				55B052CA2DFFCBA10074771B /* TimerCountdownView.swift in Sources */,
+				F0C889D22E00A91A0035D5FB /* StartStudySessionIntent.swift in Sources */,
 				55A5CB4A2DFD1EE900FA22CA /* ContentView.swift in Sources */,
-				55A5CB7F2DFD334300FA22CA /* HomeViewModel.swift in Sources */,
+				F060A2552E02905A00EF3FCA /* RepeatLastSessionIntent.swift in Sources */,
 				55A5CB852DFE57B600FA22CA /* CreateSessionView.swift in Sources */,
 				55A5CB832DFE522D00FA22CA /* SelectionView.swift in Sources */,
 				55A5CB482DFD1EE900FA22CA /* StudyTimerApp.swift in Sources */,
+				F0C889CF2E0079E60035D5FB /* CreateSessionView + Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +412,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -457,6 +476,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -483,10 +503,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StudyTimer/StudyTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StudyTimer/Preview Content\"";
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -512,10 +532,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StudyTimer/StudyTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StudyTimer/Preview Content\"";
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -539,11 +559,9 @@
 		55A5CB6E2DFD1EED00FA22CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				MARKETING_VERSION = 1.0;
@@ -559,11 +577,9 @@
 		55A5CB6F2DFD1EED00FA22CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				MARKETING_VERSION = 1.0;
@@ -579,10 +595,8 @@
 		55A5CB712DFD1EED00FA22CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.blueoceantechnologies.StudyTimerUITests;
@@ -597,10 +611,8 @@
 		55A5CB722DFD1EED00FA22CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 697KD42Z5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.blueoceantechnologies.StudyTimerUITests;

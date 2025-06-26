@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct OptionRow<T: Equatable>: View {
     let value: T
     let isSelected: Bool
